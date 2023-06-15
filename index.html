@@ -9,22 +9,34 @@
         canvas {
             border: 1px solid black;
         }
+
+        #pen-canvas {
+            border: 1px solid black;
+        }
     </style>
 </head>
 
 <body>
-    <button onclick="draw()">Draw</button>
-    <canvas id="tutorial" width="150" height="150">
-    </canvas>
+    <div>
+        <canvas id="tutorial" width="150" height="150">
+        </canvas>
+        <button onclick="draw()">Draw</button>
+        <button onclick="drawCanvas()">DrawCanvas</button>
+    </div>
+    <div>
+        <canvas id="pen-canvas" width="150" height="150"></canvas>
+        <button onclick="drawPen()">DrawPen</button>
+        <button onclick="drawCircle()">DrawCircle</button>
+        <button onclick="drawTriangle()">DrawTriangle</button>
+    </div>
+
     <script>
-        const canvas = document.querySelector('#tutorial');
+        let canvas = null
         let ctx = null;
-        if (canvas.getContext) {
-            ctx = canvas.getContext('2d');
-        }
-        else {
-            console.log("not supported getContext");
-        }
+
+        let penCanvas = null;
+        let ctxPen = null;
+
 
         function draw() {
             ctx.fillStyle = "rgb(200,0,0)";
@@ -34,6 +46,72 @@
             ctx.fillRect(30, 30, 50, 50);
 
         }
+
+        function drawCanvas() {
+            ctx.fillRect(25, 25, 100, 100);
+            ctx.clearRect(45, 45, 60, 60);
+            ctx.strokeRect(50, 50, 50, 50);
+        }
+
+        function initCanvas() {
+            canvas = document.querySelector('#tutorial');
+            if (canvas.getContext) {
+                ctx = canvas.getContext('2d');
+            }
+            else {
+                console.log("not supported getContext");
+            }
+        }
+
+        function initPenCanvas() {
+            penCanvas = document.querySelector('#pen-canvas');
+            if (penCanvas.getContext) {
+                ctxPen = penCanvas.getContext('2d');
+            }
+            else {
+                console.log("not supported getContext");
+            }
+        }
+
+        function drawPen() {
+            ctxPen.beginPath();
+            ctxPen.moveTo(75, 50);
+            ctxPen.lineTo(100, 75);
+            ctxPen.lineTo(100, 25);
+            ctxPen.stroke();
+
+
+        }
+
+        function drawCircle() {
+            ctxPen.beginPath();
+            ctxPen.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+            ctxPen.moveTo(110, 75);
+            ctxPen.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+            ctxPen.moveTo(65, 65);
+            ctxPen.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+            ctxPen.moveTo(95, 65);
+            ctxPen.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+            ctxPen.stroke();
+
+        }
+
+        function drawTriangle() {
+            ctxPen.beginPath();
+            ctxPen.moveTo(125, 125);
+            ctxPen.lineTo(125, 45);
+            ctxPen.lineTo(45, 125);
+            ctxPen.closePath(); // 마지막 
+
+
+            ctxPen.stroke();
+        }
+
+
+        window.addEventListener("DOMContentLoaded", () => {
+            initCanvas();
+            initPenCanvas();
+        })
 
 
     </script>
