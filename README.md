@@ -32,5 +32,8 @@ const ctx = canvas.getContext('2d');
 ### moveTo(x, y)
 > 펜을 지정된 위치로 이동
 
+### lineTo(x,y)
+> 도착하는 지점을 위치로 이동
+
 ### closePath
 > 마지막 지점부터 시작지점까지 직선 연결
