@@ -37,3 +37,6 @@ const ctx = canvas.getContext('2d');
 
 ### closePath
 > 마지막 지점부터 시작지점까지 직선 연결
+
+### devicePixelRatio
+> 현재 표시 장치의 물리적 픽셀과 CSS 픽셀의 비율을 반환합니다.
