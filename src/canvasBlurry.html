@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blurry</title>
+    <style>
+        #canvas {
+            max-width: 1920px;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border: 1px solid #eee;
+        }
+
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        const ctx = canvas.getContext("2d");
+        const scale = window.devicePixelRatio;
+        const sizeX = canvas.clientWidth
+        const sizeY = canvas.clientHeight;
+
+        canvas.width = scale * sizeX;
+        canvas.height = scale * sizeY;
+
+        ctx.scale(scale, scale);
+
+
+        ctx.beginPath();
+        ctx.moveTo(75, 50);
+        ctx.lineTo(100, 75);
+        ctx.lineTo(100, 25);
+        ctx.fill();
+    </script>
+</body>
+
+</html>
