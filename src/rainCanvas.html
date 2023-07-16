@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rain Canvas</title>
+    <link rel="stylesheet" href="../assets/styles/reset.css">
+    <link rel="stylesheet" href="../assets/styles/rain.css">
+</head>
+
+<body>
+    <canvas id='raincanvas' width='1280' height='720'></canvas>
+    <script>
+        let canvas = null;
+        let ctx = null;
+        const stgw = 1280;
+        const stgh = 720;
+        let loffset = 0;
+        let toffset = 0;
+        const count = 15;
+        const lcount = 5;
+        const layer = [];
+        const layery = []
+
+
+        const setCanvas = () => {
+            canvas = document.querySelector('#raincanvas')
+        }
+
+        const setCtx = () => {
+            ctx = canvas.getContext('2d');
+        }
+
+        const _pexresize = () => {
+            const cw = window.innerWidth; // 창 틀을 뺀 스크롤 포함 너비
+            const ch = window.innerHeight; // 창 틀을 뺀 스크롤 포함 높이
+            console.log("cw : ", cw);
+            console.log("ch : ", ch);
+            console.log("stgw : ", stgw);
+            console.log("stgh : ", stgh);
+            console.log("ch*stgw/stgh : ", ch * stgw / stgh);
+            // if (cw <= ch * stgw / stgh) {
+            //     loffset = 0;
+            //     toffset = Math.floor(ch - (cw * stgh / stgw)) / 2;
+            //     canvas.style.width = cw + "px";
+            //     canvas.style.height = ch + "px";
+            // } else {
+            //     loffset = Math.floor(cw - (ch * stgw / stgh)) / 2;
+            //     toffset = 0;
+            //     canvas.style.height = ch + "px";
+            //     canvas.style.width = cw + "px";
+            // }
+        }
+
+        const setFillStyle = () => {
+            ctx.fillStyle = "rgba(255,255,255,0.5)";
+        }
+
+        const raindraw = () => {
+            for (var l = 0; l < lcount; l++) {
+                clearDraw();
+                for (var i = 0; i < count * (lcount - l) / 1.5; i++) {
+                    const myx = Math.floor(Math.random() * stgw);
+                    const myy = Math.floor(Math.random() * stgh);
+                    const myh = l * 6 + 8;
+                    const myw = myh / 10;
+                    ctx.beginPath();
+                    ctx.moveTo(myx, myy);
+                    ctx.lineTo(myx + myw, myy + myh);
+                    ctx.arc(myx, myy + myh, myw, 0, 1 * Math.PI);
+                    ctx.lineTo(myx - myw, myy + myh);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                layer[l] = new Image();
+                layer[l].src = canvas.toDataURL("image/png");
+                layery[l] = 0;
+            }
+        }
+
+        const clearDraw = () => {
+            ctx.clearRect(0, 0, stgw, stgh);
+        }
+
+        const animate = () => {
+            clearDraw();
+            for (var l = 0; l < lcount; l++) {
+                layery[l] += (l + 1.5) * 5;
+                if (layery[l] > stgh) {
+
+                    layery[l] = layery[l] - stgh;
+                }
+                ctx.drawImage(layer[l], 0, layery[l]);
+                ctx.drawImage(layer[l], 0, layery[l] - stgh);
+            }
+            window.requestAnimationFrame(animate);
+        }
+
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setCanvas();
+            setCtx();
+            _pexresize();
+            setFillStyle();
+            raindraw();
+            animate();
+        })
+
+        window.addEventListener('resize', () => {
+            _pexresize();
+        })
+    </script>
+</body>
+
+</html>
